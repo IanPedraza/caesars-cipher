@@ -1,4 +1,8 @@
-const caesarShift = function (input, shifts) {
+const code = function (input, shifts) {
+  if (shifts < 0) {
+    return code(input, shifts + 95);
+  }
+
   return input.replace(/[\x20-\x7E]/g, (char) =>
     String.fromCharCode(((char.charCodeAt() - 32 + shifts) % 95) + 32)
   );
@@ -11,7 +15,7 @@ const cipher = function () {
   let input = inputText.value;
 
   if (!input) {
-    errorInputText.innerText = "El mensaje no puede quedar vacio";
+    errorInputText.innerText = "El mensaje no puede quedar vacio.";
     return;
   }
 
@@ -19,19 +23,14 @@ const cipher = function () {
 
   if (!numberOfShiftsStr) {
     errorInputShifts.innerText =
-      "El número de corrimientos no puede quedar vacio";
+      "El número de corrimientos no puede quedar vacio.";
     return;
   }
 
   let numberOfShifts = parseInt(numberOfShiftsStr);
 
-  if (numberOfShifts < 0) {
-    errorInputShifts.innerText = "El número de corrimientos debe ser positivo";
-    return;
-  }
-
-  let cipher = caesarShift(input, numberOfShifts);
-  let uncipher = caesarShift(cipher, -numberOfShifts);
+  let cipher = code(input, numberOfShifts);
+  let uncipher = code(cipher, -numberOfShifts);
 
   inputCipher.innerText = cipher;
   inputUncipher.innerText = uncipher;

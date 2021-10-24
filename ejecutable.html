@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,10 +10,9 @@
         --primary-color: #006cff;
         --secondary-color: #1255b3;
         --white: #fff;
-        --gray: #e6e9ed;
         --black: #303133;
         --error-color: #ff0000;
-        --border-radius: 5px;
+        --border-radius: 4px;
         --primary-font: Arial, Helvetica, sans-serif;
       }
 
@@ -45,7 +44,7 @@
         text-transform: uppercase;
         background-color: var(--secondary-color);
         border: none;
-        border-radius: 4px;
+        border-radius: var(--border-radius);
         cursor: pointer;
       }
 
@@ -69,6 +68,9 @@
       }
 
       .main-container {
+        min-height: calc(100vh - 160px);
+        display: grid;
+        grid-template-columns: 1fr;
         padding: 20px;
       }
 
@@ -102,6 +104,12 @@
 
       .error:not(:empty)::before {
         content: "*";
+      }
+
+      @media (min-width: 768px) {
+        .main-container {
+          grid-template-columns: 1fr 1fr;
+        }
       }
     </style>
   </head>
@@ -154,7 +162,11 @@
     <footer class="footer"></footer>
 
     <script type="text/javascript">
-      const caesarShift = function (input, shifts) {
+      const code = function (input, shifts) {
+        if (shifts < 0) {
+          return code(input, shifts + 95);
+        }
+
         return input.replace(/[\x20-\x7E]/g, (char) =>
           String.fromCharCode(((char.charCodeAt() - 32 + shifts) % 95) + 32)
         );
@@ -167,7 +179,7 @@
         let input = inputText.value;
 
         if (!input) {
-          errorInputText.innerText = "El mensaje no puede quedar vacio";
+          errorInputText.innerText = "El mensaje no puede quedar vacio.";
           return;
         }
 
@@ -175,20 +187,14 @@
 
         if (!numberOfShiftsStr) {
           errorInputShifts.innerText =
-            "El número de corrimientos no puede quedar vacio";
+            "El número de corrimientos no puede quedar vacio.";
           return;
         }
 
         let numberOfShifts = parseInt(numberOfShiftsStr);
 
-        if (numberOfShifts < 0) {
-          errorInputShifts.innerText =
-            "El número de corrimientos debe ser positivo";
-          return;
-        }
-
-        let cipher = caesarShift(input, numberOfShifts);
-        let uncipher = caesarShift(cipher, -numberOfShifts);
+        let cipher = code(input, numberOfShifts);
+        let uncipher = code(cipher, -numberOfShifts);
 
         inputCipher.innerText = cipher;
         inputUncipher.innerText = uncipher;
