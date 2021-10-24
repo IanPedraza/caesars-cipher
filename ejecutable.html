@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cifrado de Caesar</title>
+    <style>
+      :root {
+        --primary-color: #006cff;
+        --secondary-color: #1255b3;
+        --white: #fff;
+        --gray: #e6e9ed;
+        --black: #303133;
+        --error-color: #ff0000;
+        --border-radius: 5px;
+        --primary-font: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--primary-font);
+      }
+
+      html {
+        font-size: 62.5%;
+      }
+
+      body {
+        font-size: 1.8rem;
+      }
+
+      .grid-container {
+        max-width: 980px;
+        min-width: 280px;
+        margin: 0px auto;
+      }
+
+      button {
+        padding: 10px 20px;
+        color: var(--white);
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        background-color: var(--secondary-color);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .header {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary-color);
+      }
+
+      .footer {
+        width: 100%;
+        height: 80px;
+        background-color: var(--black);
+      }
+
+      .header .title {
+        color: var(--white);
+      }
+
+      .main-container {
+        padding: 20px;
+      }
+
+      .input-container {
+        width: 95%;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        margin: 30px auto;
+      }
+
+      .input-container label {
+        margin-bottom: 30px;
+      }
+
+      .input-container input,
+      textarea {
+        width: 100%;
+        display: block;
+        margin-top: 10px;
+        padding: 5px 8px;
+        font-size: 1.8rem;
+        resize: none;
+      }
+
+      .error {
+        margin-top: 5px;
+        font-size: 1.4rem;
+        color: var(--error-color);
+      }
+
+      .error:not(:empty)::before {
+        content: "*";
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">Cifrado de Caesar</h1>
+    </header>
+    <main>
+      <section class="grid-container main-container">
+        <div class="input-container">
+          <label for="input-area">
+            Ingresa el texto a cifrar:
+            <textarea
+              name="input-area"
+              id="inputText"
+              cols="30"
+              rows="5"
+            ></textarea>
+            <p class="error" id="errorInputText"></p>
+          </label>
+          <label for="shifts-number">
+            Número de corrimientos:
+            <input type="number" id="inputShifts" name="shifts-number" />
+            <p class="error" id="errorInputShifts"></p>
+          </label>
+          <button onclick="cipher()">Cifrar</button>
+        </div>
+        <div class="input-container">
+          <label for="input-area">
+            Texto cifrado:
+            <textarea
+              name="input-area"
+              id="inputCipher"
+              cols="30"
+              rows="5"
+            ></textarea>
+          </label>
+          <label for="input-area">
+            Texto descifrado:
+            <textarea
+              name="input-area"
+              id="inputUncipher"
+              cols="30"
+              rows="5"
+            ></textarea>
+          </label>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"></footer>
+
+    <script type="text/javascript">
+      const caesarShift = function (input, shifts) {
+        return input.replace(/[\x20-\x7E]/g, (char) =>
+          String.fromCharCode(((char.charCodeAt() - 32 + shifts) % 95) + 32)
+        );
+      };
+
+      const cipher = function () {
+        errorInputText.innerText = null;
+        errorInputShifts.innerText = null;
+
+        let input = inputText.value;
+
+        if (!input) {
+          errorInputText.innerText = "El mensaje no puede quedar vacio";
+          return;
+        }
+
+        let numberOfShiftsStr = inputShifts.value;
+
+        if (!numberOfShiftsStr) {
+          errorInputShifts.innerText =
+            "El número de corrimientos no puede quedar vacio";
+          return;
+        }
+
+        let numberOfShifts = parseInt(numberOfShiftsStr);
+
+        if (numberOfShifts < 0) {
+          errorInputShifts.innerText =
+            "El número de corrimientos debe ser positivo";
+          return;
+        }
+
+        let cipher = caesarShift(input, numberOfShifts);
+        let uncipher = caesarShift(cipher, -numberOfShifts);
+
+        inputCipher.innerText = cipher;
+        inputUncipher.innerText = uncipher;
+      };
+
+      const inputShifts = document.getElementById("inputShifts");
+      const inputText = document.getElementById("inputText");
+      const inputCipher = document.getElementById("inputCipher");
+      const inputUncipher = document.getElementById("inputUncipher");
+      const errorInputText = document.getElementById("errorInputText");
+      const errorInputShifts = document.getElementById("errorInputShifts");
+    </script>
+  </body>
+</html>
