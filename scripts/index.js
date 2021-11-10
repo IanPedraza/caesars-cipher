@@ -1,6 +1,6 @@
-const code = function (input, shifts) {
+const _code = function (input, shifts) {
   if (shifts < 0) {
-    return code(input, shifts + 95);
+    return _code(input, shifts + 95);
   }
 
   return input.replace(/[\x20-\x7E]/g, (char) =>
@@ -8,7 +8,7 @@ const code = function (input, shifts) {
   );
 };
 
-const cipher = function () {
+const code = function () {
   errorInputText.innerText = null;
   errorInputShifts.innerText = null;
 
@@ -29,11 +29,38 @@ const cipher = function () {
 
   let numberOfShifts = parseInt(numberOfShiftsStr);
 
-  let cipher = code(input, numberOfShifts);
-  let uncipher = code(cipher, -numberOfShifts);
+  let coded = _code(input, numberOfShifts);
+  let decoded = _code(coded, -numberOfShifts);
 
-  inputCipher.innerText = cipher;
-  inputUncipher.innerText = uncipher;
+  inputCipher.innerText = coded;
+  inputUncipher.innerText = decoded;
+};
+
+const decode = function () {
+  errorInputText.innerText = null;
+  errorInputShifts.innerText = null;
+
+  let input = inputText.value;
+
+  if (!input) {
+    errorInputText.innerText = "El mensaje no puede quedar vacio.";
+    return;
+  }
+
+  let numberOfShiftsStr = inputShifts.value;
+
+  if (!numberOfShiftsStr) {
+    errorInputShifts.innerText =
+      "El número de corrimientos no puede quedar vacio.";
+    return;
+  }
+
+  let numberOfShifts = parseInt(numberOfShiftsStr);
+
+  let decoded = _code(input, -numberOfShifts);
+
+  inputCipher.innerText = input;
+  inputUncipher.innerText = decoded;
 };
 
 const inputShifts = document.getElementById("inputShifts");

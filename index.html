@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cifrado de Caesar</title>
+    <title>Cifrado de César</title>
     <link rel="stylesheet" href="./styles/main.css" />
     <link
       rel="stylesheet"
@@ -14,7 +14,7 @@
   </head>
   <body>
     <header class="header">
-      <h1 class="title">Cifrado de Caesar</h1>
+      <h1 class="title">Cifrado de César</h1>
     </header>
     <main>
       <section class="grid-container main-container">
@@ -34,7 +34,8 @@
             <input type="number" id="inputShifts" name="shifts-number" />
             <p class="error" id="errorInputShifts"></p>
           </label>
-          <button onclick="cipher()">Cifrar</button>
+          <button onclick="code()">Cifrar</button>
+          <button class="button--outlined" onclick="decode()">Descifrar</button>
         </div>
         <div class="input-container">
           <label for="input-area">
@@ -43,7 +44,8 @@
               name="input-area"
               id="inputCipher"
               cols="30"
-              rows="5" readonly
+              rows="5"
+              readonly
             ></textarea>
           </label>
           <label for="input-area">
@@ -52,7 +54,8 @@
               name="input-area"
               id="inputUncipher"
               cols="30"
-              rows="5" readonly
+              rows="5"
+              readonly
             ></textarea>
           </label>
         </div>
